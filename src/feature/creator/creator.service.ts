@@ -9,6 +9,7 @@ import { ConflictError } from "@/shared/errors/conflict";
 import { AppError } from "@/shared/errors/app-error";
 import { ForbiddenError } from "@/shared/errors/forbidden";
 import { CreatorPolicy } from "./creator.policy";
+import { addDays } from "date-fns";
 
 export class CreatorService {
   getCreators(): Promise<Creator[]> {
@@ -55,6 +56,19 @@ export class CreatorService {
     if (!updatedCreator) throw new NotFoundError(CREATOR_NOT_FOUND);
 
     return updatedCreator;
+  }
+
+  async verifyCreator(id: string): Promise<Creator> {
+    const verifiedUntil = addDays(new Date(), 30);
+
+    const [creator] = await db.update(creators).set({
+      isVerified: true,
+      verifiedUntil
+    }).where(eq(creators.id, id)).returning();
+
+    if (!creator) throw new NotFoundError(CREATOR_NOT_FOUND);
+
+    return creator;
   }
 
   private async getCreatorByUsername(username: string): Promise<Creator | undefined> {

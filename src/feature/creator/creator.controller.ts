@@ -37,4 +37,11 @@ export class CreatorController {
 
     return sendSuccess(res, CREATOR_SUCCESS_MESSAGE.UPDATE_CREATOR, creator);
   });
+
+  verifyCreator = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const id = validate(getCreatorById, req.params.id);
+    const creator = await this.creatorService.verifyCreator(id);
+
+    return sendSuccess(res, CREATOR_SUCCESS_MESSAGE.VERIFY_CREATOR, creator);
+  });
 }

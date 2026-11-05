@@ -7,6 +7,7 @@ export const CREATOR_SUCCESS_MESSAGE = {
   GET_CREATOR: "Creator data",
   CREATE_CREATOR: "Creator created",
   UPDATE_CREATOR: "Creator updated",
+  VERIFY_CREATOR: "Creator verified",
 }
 
 export const CREATOR_POLICY_ERROR_MESSAGE = {
@@ -20,4 +21,5 @@ export const CREATOR_TEST_ROUTE = {
   GET_CREATOR_BY_USERNAME: (username: string) => `${CREATOR_BASE_URL}/${username}`,
   CREATE_CREATOR: `${CREATOR_BASE_URL}`,
   UPDATE_CREATOR: (id: string) => `${CREATOR_BASE_URL}/${id}`,
+  VERIFY_CREATOR: (id: string) => `${CREATOR_BASE_URL}/${id}/verify`,
 }
