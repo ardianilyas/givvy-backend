@@ -9,6 +9,10 @@ export const CREATOR_SUCCESS_MESSAGE = {
   UPDATE_CREATOR: "Creator updated",
 }
 
+export const CREATOR_POLICY_ERROR_MESSAGE = {
+  UPDATE: "You can't update this resource",
+}
+
 export const CREATOR_BASE_URL = "/api/creators";
 
 export const CREATOR_TEST_ROUTE = {

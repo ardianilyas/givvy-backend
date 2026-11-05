@@ -8,6 +8,7 @@ import type { CreateCreatorDto, UpdateCreatorDto } from "./creator.dto";
 import { ConflictError } from "@/shared/errors/conflict";
 import { AppError } from "@/shared/errors/app-error";
 import { ForbiddenError } from "@/shared/errors/forbidden";
+import { CreatorPolicy } from "./creator.policy";
 
 export class CreatorService {
   getCreators(): Promise<Creator[]> {
@@ -41,18 +42,33 @@ export class CreatorService {
     return newCreator;
   }
 
-  async updateCreator(data: UpdateCreatorDto, id: string): Promise<Creator> {
-    const [creator] = await db.update(creators).set(data).where(eq(creators.id, id)).returning();
+  async updateCreator(data: UpdateCreatorDto, id: string, userId: string): Promise<Creator> {
+    const authorId = await this.getCreatorByIdAndReturnUserId(id);
 
-    if (!creator) throw new NotFoundError(CREATOR_NOT_FOUND);
+    CreatorPolicy.canUpdate({
+      userId,
+      authorId
+    });
 
-    return creator;
+    const [updatedCreator] = await db.update(creators).set(data).where(eq(creators.id, id)).returning();
+
+    if (!updatedCreator) throw new NotFoundError(CREATOR_NOT_FOUND);
+
+    return updatedCreator;
   }
 
   private async getCreatorByUsername(username: string): Promise<Creator | undefined> {
     const [creator] = await db.select().from(creators).where(eq(creators.username, username)).limit(1);
 
     return creator;
+  }
+
+  private async getCreatorByIdAndReturnUserId(id: string): Promise<string> {
+    const [creator] = await db.select().from(creators).where(eq(creators.id, id)).limit(1);
+
+    if (!creator) throw new NotFoundError(CREATOR_NOT_FOUND);
+
+    return creator.userId;
   }
 
   private async checkIsUserAlreadyHaveCreatorAccount(userId: string): Promise<boolean> {

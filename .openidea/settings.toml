@@ -1,2 +1,6 @@
 [files]
 fileTypeOverrides = { "src/feature/creator/__tests__/get-creator.test.ts" = "typescript" }
+
+[languages.prettier]
+prefer = true
+runOnSave = true

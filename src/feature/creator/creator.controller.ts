@@ -33,7 +33,7 @@ export class CreatorController {
   updateCreator = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const id = validate(getCreatorById, req.params.id);
     const data = validate(updateCreatorDto, req.body);
-    const creator = await this.creatorService.updateCreator(data, id);
+    const creator = await this.creatorService.updateCreator(data, id, req.auth.user.id);
 
     return sendSuccess(res, CREATOR_SUCCESS_MESSAGE.UPDATE_CREATOR, creator);
   });
