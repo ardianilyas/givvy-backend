@@ -7,6 +7,7 @@ export interface SessionUser {
   id: string;
   name?: string;
   email: string;
+  emailVerified: boolean;
   role: UserRole,
   image?: string | null | undefined;
 }

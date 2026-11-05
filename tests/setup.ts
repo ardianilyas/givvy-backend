@@ -1,6 +1,6 @@
-import { afterEach } from "vitest";
+import { afterAll } from "vitest";
 import { clearDb } from "./helpers/clear-db";
 
-afterEach(async () => {
+afterAll(async () => {
   await clearDb();
 });

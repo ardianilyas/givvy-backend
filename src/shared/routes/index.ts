@@ -1,8 +1,8 @@
 import { Router } from "express";
-import categoryRoute from "@/feature/category/category.route";
+import creatorRoute from "@/feature/creator/creator.route";
 
 const router = Router();
 
-router.use("/categories", categoryRoute);
+router.use('/creators', creatorRoute);
 
 export default router;

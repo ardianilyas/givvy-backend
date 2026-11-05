@@ -15,15 +15,13 @@ export async function authenticate(role: UserRole = "user") {
     password: "developer"
   }
 
-  await agent
+  const signUpRes = await agent
     .post("/api/auth/sign-up/email")
     .send(user)
 
-  const [data] = await db.update(schema.user).set({ role }).where(eq(schema.user.email, user.email)).returning();
+  const userId: string = signUpRes.body?.user?.id ?? ""
 
-  if (!data) throw new Error("Failed to update user role");
-
-  const userId = data.id;
+  await db.update(schema.user).set({ role }).where(eq(schema.user.id, userId))
 
   await agent
     .post("/api/auth/sign-in/email")
