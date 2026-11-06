@@ -3,6 +3,10 @@ import "dotenv/config";
 import { z } from "zod";
 
 const envSchema = z.object({
+  NODE_ENV: z.string({
+    error: "Node_ENV is required",
+  }),
+
   PORT: z.string({
     error: "PORT is required",
   }),

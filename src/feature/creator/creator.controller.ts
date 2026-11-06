@@ -6,6 +6,7 @@ import { validate } from "@/shared/utils/validate";
 import { createCreatorDto, getCreatorById, getCreatorByUsername, updateCreatorDto } from "./creator.dto";
 import type { AuthenticatedRequest } from "@/shared/types";
 import { CREATOR_SUCCESS_MESSAGE } from "./creator.constant";
+import { logger } from "@/shared/lib/logger";
 
 export class CreatorController {
   constructor(private readonly creatorService: CreatorService) {}
@@ -26,6 +27,14 @@ export class CreatorController {
     const data = validate(createCreatorDto, req.body);
     const userId = req.auth.user.id;
     const creator = await this.creatorService.createCreator(data, userId);
+
+    req.log.info(
+      {
+        action: "creator.created",
+        data: creator
+      },
+      "A new creator registered"
+    );
 
     return sendSuccess(res, CREATOR_SUCCESS_MESSAGE.CREATE_CREATOR, creator, 201);
   });
