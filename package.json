@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/server.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "log:server": "bun run src/scripts/pinorama-server.ts",
+    "log:studio": "bun run src/scripts/pinorama-watcher.ts | bunx pinorama --open --port 6200 --server-url http://127.0.0.1:6201/pinorama"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.6.0",
@@ -16,6 +18,7 @@
     "@vitest/coverage-v8": "4.1.6",
     "drizzle-kit": "^0.31.10",
     "pino-pretty": "^13.2.0",
+    "pinorama-studio": "^0.6.1",
     "supertest": "^7.2.2",
     "tsx": "^4.21.0",
     "vitest": "^4.1.6"
@@ -24,16 +27,21 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
+    "@fastify/cors": "^11.4.1",
     "better-auth": "^1.6.10",
+    "chokidar": "^6.0.0",
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "drizzle-seed": "^0.3.1",
     "express": "^5.2.1",
+    "fastify": "^5.12.8",
     "pg": "^8.20.0",
     "pino": "^10.4.0",
     "pino-http": "^11.0.0",
     "pino-roll": "^4.0.0",
+    "pinorama-server": "^0.3.4",
+    "pinorama-transport": "^0.1.6",
     "zod": "^4.4.3"
   }
 }

@@ -32,12 +32,9 @@ const errorStream = pino.transport({
 
 export const logger = pino(
   {
-    level:
-      env.NODE_ENV === "production"
-      ? "info"
-      : "debug",
+    level: env.NODE_ENV === "production" ? "info" : "debug",
 
-    timestamp: pino.stdTimeFunctions.isoTime,
+    timestamp: pino.stdTimeFunctions.epochTime,
 
     base: {
       service: "givvy",
@@ -55,7 +52,6 @@ export const logger = pino(
       censor: "[REDACTED]",
     },
   },
-
   pino.multistream(
     [
       {
@@ -68,7 +64,7 @@ export const logger = pino(
       },
     ],
     {
-      dedupe: true,
+      dedupe: false,
     },
   ),
 );
