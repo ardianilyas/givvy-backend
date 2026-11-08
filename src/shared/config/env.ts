@@ -22,6 +22,14 @@ const envSchema = z.object({
   BETTER_AUTH_URL: z.string({
     error: "BETTER_AUTH_URL is required",
   }),
+
+  REDIS_HOST: z.string({ error: "Redis host is required" }).default("127.0.0.1"),
+
+  REDIS_PORT: z.coerce.number().default(6379),
+
+  REDIS_USERNAME: z.string().optional(),
+
+  REDIS_PASSWORD: z.string().optional(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

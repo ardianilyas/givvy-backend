@@ -5,6 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/server.ts",
+    "worker:dev": "bun --watch src/worker.ts",
+    "worker:start": "bun src/worker.ts",
     "test": "vitest run"
   },
   "devDependencies": {
@@ -25,11 +27,13 @@
   },
   "dependencies": {
     "better-auth": "^1.6.10",
+    "bullmq": "^6.7.1",
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "drizzle-seed": "^0.3.1",
     "express": "^5.2.1",
+    "ioredis": "^6.0.0",
     "pg": "^8.20.0",
     "pino": "^10.4.0",
     "pino-http": "^11.0.0",
