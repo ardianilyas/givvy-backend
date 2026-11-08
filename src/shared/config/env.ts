@@ -30,6 +30,8 @@ const envSchema = z.object({
   REDIS_USERNAME: z.string().optional(),
 
   REDIS_PASSWORD: z.string().optional(),
+
+  RESEND_API_KEY: z.string({ error: "Resend api key is required" }),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
