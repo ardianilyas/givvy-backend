@@ -20,6 +20,6 @@ export const USER_JOB_CONFIG = {
 
 export const USER_CLEANUP_CONFIG = {
   UNVERIFIED_ACCOUNT_EXPIRY_DAYS: 30,
-  SCHEDULE_CRON: "0 1 * * *",
+  SCHEDULE_CRON: "0 0 1 * * *",
   TIMEZONE: "Asia/Jakarta",
 } as const;

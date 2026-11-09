@@ -1,11 +1,13 @@
 import { scheduleDeleteUnverifiedUsers } from "@/feature/user/user.queue";
 import { userWorker } from "@/feature/user/user.worker";
 import { redis } from "@/shared/config/redis";
+import { creatorWorker } from "./feature/creator/queue/creator.worker";
 
 async function bootstrap() {
   console.log("[Worker] Starting...");
 
   await userWorker.waitUntilReady();
+  await creatorWorker.waitUntilReady();
 
   console.log("[Worker] Worker ready");
 
@@ -17,7 +19,11 @@ async function bootstrap() {
 async function shutdown() {
   console.log("[Worker] Shutting down...");
 
-  await userWorker.close();
+  await Promise.all([
+    userWorker.close(),
+    creatorWorker.close(),
+  ]);
+
   await redis.quit();
 
   process.exit(0);
@@ -29,7 +35,11 @@ process.once("SIGTERM", shutdown);
 bootstrap().catch(async (error) => {
   console.error("[Worker] Bootstrap failed:", error);
 
-  await userWorker.close();
+  await Promise.all([
+    userWorker.close(),
+    creatorWorker.close(),
+  ]);
+
   await redis.quit();
 
   process.exit(1);
