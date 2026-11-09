@@ -7,13 +7,17 @@
     "dev": "bun --watch src/server.ts",
     "worker:dev": "bun --watch src/worker.ts",
     "worker:start": "bun src/worker.ts",
+    "email:dev": "email dev",
     "test": "vitest run"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.6.0",
+    "@react-email/ui": "6.11.8",
     "@types/bun": "latest",
     "@types/express": "^5.0.6",
     "@types/pg": "^8.20.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@types/supertest": "^7.2.0",
     "@vitest/coverage-v8": "4.1.6",
     "drizzle-kit": "^0.31.10",
@@ -26,6 +30,7 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
+    "@react-email/components": "^1.0.12",
     "better-auth": "^1.6.10",
     "bullmq": "^6.7.1",
     "date-fns": "^4.4.0",
@@ -38,6 +43,9 @@
     "pino": "^10.4.0",
     "pino-http": "^11.0.0",
     "pino-roll": "^4.0.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-email": "6.11.8",
     "resend": "^6.37.0",
     "zod": "^4.4.3"
   }

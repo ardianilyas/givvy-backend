@@ -25,8 +25,8 @@ export class CreatorController {
 
   createCreator = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const data = validate(createCreatorDto, req.body);
-    const userId = req.auth.user.id;
-    const creator = await this.creatorService.createCreator(data, userId);
+    const user = req.auth.user;
+    const creator = await this.creatorService.createCreator(data, user.id, user.email);
 
     req.log.info(
       {

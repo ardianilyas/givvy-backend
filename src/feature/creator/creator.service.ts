@@ -1,15 +1,21 @@
 import { db } from "@/shared/db";
-import type { Creator } from "./creator.type";
+import type { Creator, CreatorJobData } from "./creator.type";
 import { creators } from "@/shared/db/schemas";
 import { asc, eq } from "drizzle-orm";
 import { NotFoundError } from "@/shared/errors/not-found";
-import { CREATOR_NOT_FOUND, USER_ALREADY_HAVE_CREATOR_ACCOUNT_FORBIDDEN, USERNAME_ALREADY_TAKEN } from "./creator.constant";
+import { CREATOR_JOBS, CREATOR_NOT_FOUND, CREATOR_QUEUE_NAME, USER_ALREADY_HAVE_CREATOR_ACCOUNT_FORBIDDEN, USERNAME_ALREADY_TAKEN } from "./creator.constant";
 import type { CreateCreatorDto, UpdateCreatorDto } from "./creator.dto";
 import { ConflictError } from "@/shared/errors/conflict";
 import { AppError } from "@/shared/errors/app-error";
 import { ForbiddenError } from "@/shared/errors/forbidden";
 import { CreatorPolicy } from "./creator.policy";
 import { addDays } from "date-fns";
+import { recipient, resend } from "@/shared/config/resend";
+import { isProduction } from "@/shared/constants/global.constants";
+import { env } from "@/shared/config/env";
+import { BadRequestError } from "@/shared/errors/bad-request";
+import { creatorQueue } from "./queue/creator.queue";
+import CreatorWelcomeEmail from "./emails/CreatorWelcomeEmail";
 
 export class CreatorService {
   getCreators(): Promise<Creator[]> {
@@ -24,7 +30,7 @@ export class CreatorService {
     return creator;
   }
 
-  async createCreator(data: CreateCreatorDto, userId: string): Promise<Creator> {
+  async createCreator(data: CreateCreatorDto, userId: string, email: string): Promise<Creator> {
     // ensure user doesn't have creator account
     const isUserAlreadyHaveCreatorAccount = await this.checkIsUserAlreadyHaveCreatorAccount(userId);
 
@@ -39,6 +45,14 @@ export class CreatorService {
     const [newCreator] = await db.insert(creators).values({ ...data, userId }).returning();
 
     if (!newCreator) throw new AppError("Failed to create creator, try again");
+
+    // send welcome creator email queue
+    await creatorQueue.add(CREATOR_JOBS.SEND_WELCOME_CREATOR_EMAIL, {
+      type: CREATOR_JOBS.SEND_WELCOME_CREATOR_EMAIL,
+      to: email,
+      subject: "Welcome to Givvy as Creator",
+      username: newCreator.username,
+    });
 
     return newCreator;
   }
@@ -91,5 +105,20 @@ export class CreatorService {
     if (!creator) return false;
 
     return !!creator;
+  }
+
+  async sendWelcomeEmailToCreator(email: string, subject: string, username: string): Promise<string> {
+    const to = recipient(email);
+
+    const { data, error } = await resend.emails.send({
+      from: env.EMAIL_FROM,
+      to,
+      subject,
+      react: CreatorWelcomeEmail({ username }),
+    });
+
+    if (error) throw new BadRequestError(error.message);
+
+    return data.id
   }
 }

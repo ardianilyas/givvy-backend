@@ -1,12 +1,15 @@
 # TODO-PHASE-1
 
-### [IMPORTANT]
-- [ ] Configure Resend
+### [IMPORTANT - CONFIG]
+- [x] Configure Resend
 - [x] Configure BullMQ
-- [ ] Configure React Email
+- [x] Configure React Email
+- [ ] Configure Websocket using socket.io
 
 ### [MEDIUM]
-- [ ] Add email service and template for WelcomeCreator
+- [x] Add email service and template for WelcomeCreator
+- [ ] Create donations schema
+- [ ] Donation feature (send donation)
 
-### [Added Feature]
+### [New Feature]
 - [x] Task Scheduling to delete users who haven't verified their email within 30 days

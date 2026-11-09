@@ -2,6 +2,26 @@ export const CREATOR_NOT_FOUND = "Creator not found";
 export const USER_ALREADY_HAVE_CREATOR_ACCOUNT_FORBIDDEN = "You're already have creator account";
 export const USERNAME_ALREADY_TAKEN = "Username already taken";
 
+export const CREATOR_QUEUE_NAME = "creator-queue";
+export const CREATOR_JOBS = {
+  SEND_WELCOME_CREATOR_EMAIL: "send-welcome-creator-email",
+} as const;
+
+export const EMAIL_TEMPLATES = {
+  CREATOR_WELCOME: "creator-welcome",
+} as const;
+
+export interface CreatorWelcomeEmailData {
+  creatorName: string;
+}
+
+export interface EmailJobData {
+  template: typeof EMAIL_TEMPLATES.CREATOR_WELCOME,
+  to: string;
+  subject: string;
+  data: CreatorWelcomeEmailData;
+}
+
 export const CREATOR_SUCCESS_MESSAGE = {
   GET_CREATORS: "Creator list",
   GET_CREATOR: "Creator data",
