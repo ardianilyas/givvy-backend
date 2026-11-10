@@ -28,10 +28,12 @@ export const CREATOR_SUCCESS_MESSAGE = {
   CREATE_CREATOR: "Creator created",
   UPDATE_CREATOR: "Creator updated",
   VERIFY_CREATOR: "Creator verified",
+  GENERATE_ALERT_TOKEN: "Alert token generated",
 }
 
 export const CREATOR_POLICY_ERROR_MESSAGE = {
   UPDATE: "You can't update this resource",
+  GENERATE_ALERT_TOKEN: "You can't generate alert token for this resource",
 }
 
 export const CREATOR_BASE_URL = "/api/creators";
@@ -42,4 +44,5 @@ export const CREATOR_TEST_ROUTE = {
   CREATE_CREATOR: `${CREATOR_BASE_URL}`,
   UPDATE_CREATOR: (id: string) => `${CREATOR_BASE_URL}/${id}`,
   VERIFY_CREATOR: (id: string) => `${CREATOR_BASE_URL}/${id}/verify`,
+  GENERATE_ALERT_TOKEN: (id: string) => `${CREATOR_BASE_URL}/${id}/generate-alert-token`,
 }

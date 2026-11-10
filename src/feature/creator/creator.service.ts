@@ -16,6 +16,7 @@ import { env } from "@/shared/config/env";
 import { BadRequestError } from "@/shared/errors/bad-request";
 import { creatorQueue } from "./queue/creator.queue";
 import CreatorWelcomeEmail from "./emails/CreatorWelcomeEmail";
+import { randomBytes } from "node:crypto";
 
 export class CreatorService {
   getCreators(): Promise<Creator[]> {
@@ -79,6 +80,23 @@ export class CreatorService {
       isVerified: true,
       verifiedUntil
     }).where(eq(creators.id, id)).returning();
+
+    if (!creator) throw new NotFoundError(CREATOR_NOT_FOUND);
+
+    return creator;
+  }
+
+  async generateAlertToken(id: string, userId: string) {
+    const authorId = await this.getCreatorByIdAndReturnUserId(id);
+
+    CreatorPolicy.canGenerateAlertToken({
+      authorId,
+      userId
+    });
+
+    const alertToken = randomBytes(32).toString("base64url");
+
+    const [creator] = await db.update(creators).set({ alertToken }).where(eq(creators.id, id)).returning();
 
     if (!creator) throw new NotFoundError(CREATOR_NOT_FOUND);
 

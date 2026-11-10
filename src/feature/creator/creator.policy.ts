@@ -11,5 +11,10 @@ export const CreatorPolicy = {
     if (context.authorId !== context.userId) {
       throw new ForbiddenError(CREATOR_POLICY_ERROR_MESSAGE.UPDATE);
     }
+  },
+  canGenerateAlertToken(context: CreatorPolicyContext) {
+    if (context.authorId !== context.userId) {
+      throw new ForbiddenError(CREATOR_POLICY_ERROR_MESSAGE.GENERATE_ALERT_TOKEN);
+    }
   }
 }

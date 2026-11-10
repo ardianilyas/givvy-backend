@@ -53,4 +53,11 @@ export class CreatorController {
 
     return sendSuccess(res, CREATOR_SUCCESS_MESSAGE.VERIFY_CREATOR, creator);
   });
+
+  generateAlertToken = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const id = validate(getCreatorById, req.params.id);
+    const creator = await this.creatorService.generateAlertToken(id, req.auth.user.id);
+
+    return sendSuccess(res, CREATOR_SUCCESS_MESSAGE.GENERATE_ALERT_TOKEN, creator);
+  });
 }

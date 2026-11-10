@@ -9,6 +9,7 @@ export const creators = pgTable("creators", {
   description: text("description"),
   avatarUrl: varchar("avatar_url"),
   isActive: boolean("is_active").notNull().default(true),
+  alertToken: varchar("alert_token", { length: 64 }).unique(),
   
   isVerified: boolean("is_verified").default(false),
   verifiedUntil: timestamp("verified_until"),

@@ -15,6 +15,7 @@ router.get('/:username', creatorController.getCreatorByUsername);
 router.use(authMiddleware);
 router.post('/', creatorController.createCreator);
 router.patch('/:id', creatorController.updateCreator);
+router.patch('/:id/generate-alert-token', creatorController.generateAlertToken);
 
 router.use(requireRole("admin"))
 router.patch('/:id/verify', creatorController.verifyCreator);
