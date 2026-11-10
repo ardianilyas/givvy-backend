@@ -13,3 +13,4 @@
 
 ### [New Feature]
 - [x] Task Scheduling to delete users who haven't verified their email within 30 days
+- [x] Generate alert token
