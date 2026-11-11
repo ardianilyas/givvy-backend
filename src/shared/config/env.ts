@@ -37,7 +37,11 @@ const envSchema = z.object({
 
   RESEND_API_KEY: z.string({ error: "RESEND_API_KEY is required" }),
 
-  EMAIL_FROM: z.string({ error: "EMAIL_FROM is required" })
+  EMAIL_FROM: z.string({ error: "EMAIL_FROM is required" }),
+
+  BORDERPAY_API_KEY: z.string({ error: "BORDERPAY_API_KEY is required" }),
+
+  BORDERPAY_BASE_URL: z.string({ error: "BORDERPAY_BASE_URL is required" }),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
