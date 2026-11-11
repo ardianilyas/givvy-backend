@@ -1,6 +1,6 @@
 import { db } from "@/shared/db";
 import type { Creator } from "./creator.type";
-import { creators } from "@/shared/db/schemas";
+import { creatorBalances, creators } from "@/shared/db/schemas";
 import { asc, eq } from "drizzle-orm";
 import { NotFoundError } from "@/shared/errors/not-found";
 import { CREATOR_JOBS, CREATOR_NOT_FOUND, USER_ALREADY_HAVE_CREATOR_ACCOUNT_FORBIDDEN, USERNAME_ALREADY_TAKEN } from "./creator.constant";
@@ -42,9 +42,18 @@ export class CreatorService {
     if (creator) throw new ConflictError(USERNAME_ALREADY_TAKEN);
 
     // insert creator data
-    const [newCreator] = await db.insert(creators).values({ ...data, userId }).returning();
+    const newCreator = await db.transaction(async (tx) => {
+      const [newCreator] = await tx.insert(creators).values({ ...data, userId }).returning();
 
-    if (!newCreator) throw new AppError("Failed to create creator, try again");
+      if (!newCreator) throw new AppError("Failed to create creator, try again");
+
+      await tx.insert(creatorBalances).values({
+        creatorId: newCreator.id,
+        balance: 0
+      });
+
+      return newCreator;
+    });
 
     // send welcome creator email queue
     await creatorQueue.add(CREATOR_JOBS.SEND_WELCOME_CREATOR_EMAIL, {
