@@ -11,6 +11,10 @@ const envSchema = z.object({
     error: "PORT is required",
   }),
 
+  FRONTEND_URL: z.string({
+    error: "FRONTEND_URL is required",
+  }),
+
   DATABASE_URL: z.string({
     error: "DATABASE_URL is required",
   }),

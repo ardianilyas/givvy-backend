@@ -1,7 +1,7 @@
 import request from "supertest";
 import { eq } from "drizzle-orm";
 import type { UserRole } from "@/shared/types/express";
-import app from "@/server";
+import app from "@/app";
 import { db } from "@/shared/db";
 import * as schema from "@/shared/db/schemas";
 import { faker } from "@faker-js/faker";

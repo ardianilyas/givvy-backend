@@ -14,4 +14,4 @@ export type CreatorJobData =
     to: string;
     subject: string;
     username: string;
-  },
+  };

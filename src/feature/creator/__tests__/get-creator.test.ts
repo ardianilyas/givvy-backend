@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
 import { authenticate } from "../../../../tests/helpers/auth.helper";
 import { createTestCreator } from "./helpers/create-test-creator";
-import app from "@/server";
+import app from "@/app";
 import { CREATOR_NOT_FOUND, CREATOR_TEST_ROUTE } from "../creator.constant";
 
 describe("get-creator", () => {

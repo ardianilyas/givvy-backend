@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
 import type { CreateCreatorDto } from "../creator.dto";
 import { authenticate } from "../../../../tests/helpers/auth.helper";
-import app from "@/server";
+import app from "@/app";
 import { CREATOR_SUCCESS_MESSAGE, CREATOR_TEST_ROUTE, USER_ALREADY_HAVE_CREATOR_ACCOUNT_FORBIDDEN } from "../creator.constant";
 import { AUTH_MESSAGE } from "@/shared/constants/auth.constants";
 import { createTestCreator } from "./helpers/create-test-creator";

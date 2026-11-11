@@ -3,7 +3,7 @@ import request from "supertest";
 import { authenticate } from "../../../../tests/helpers/auth.helper";
 import type { UpdateCreatorDto } from "../creator.dto";
 import { createTestCreator } from "./helpers/create-test-creator";
-import app from "@/server";
+import app from "@/app";
 import {
   CREATOR_NOT_FOUND,
   CREATOR_POLICY_ERROR_MESSAGE,

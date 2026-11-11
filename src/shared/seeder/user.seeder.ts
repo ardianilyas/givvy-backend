@@ -1,4 +1,4 @@
-import app from "@/server";
+import app from "@/app";
 import { faker } from "@faker-js/faker";
 import request from "supertest";
 
