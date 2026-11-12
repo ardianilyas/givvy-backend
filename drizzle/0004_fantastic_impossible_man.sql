@@ -1,0 +1,1 @@
+ALTER TABLE "creators" ALTER COLUMN "alert_token" SET NOT NULL;
