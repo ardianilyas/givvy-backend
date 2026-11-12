@@ -42,8 +42,9 @@ export class CreatorService {
     if (creator) throw new ConflictError(USERNAME_ALREADY_TAKEN);
 
     // insert creator data
+    const alertToken = randomBytes(32).toString("base64url");
     const newCreator = await db.transaction(async (tx) => {
-      const [newCreator] = await tx.insert(creators).values({ ...data, userId }).returning();
+      const [newCreator] = await tx.insert(creators).values({ ...data, userId, alertToken }).returning();
 
       if (!newCreator) throw new AppError("Failed to create creator, try again");
 

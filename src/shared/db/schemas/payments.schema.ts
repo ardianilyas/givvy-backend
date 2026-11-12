@@ -9,7 +9,7 @@ export const payments = pgTable("payments", {
   referenceId: varchar("reference_id", { length: 255 }).notNull(),
   paymentUrl: text("payment_url"),
   paymentMethod: varchar("payment_method", { length: 50 }),
-  ampunt: bigint("amount", { mode: "number" }).notNull(),
+  amount: bigint("amount", { mode: "number" }).notNull(),
   status: paymentStatusEnum("status").notNull().default("pending"),
   expiredAt: timestamp("expired_at"),
   paidAt: timestamp("paid_at"),

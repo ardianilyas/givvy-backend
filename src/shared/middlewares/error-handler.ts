@@ -2,16 +2,17 @@ import type { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 
 import { AppError } from "../errors/app-error";
-import { NotFoundError } from "../errors/not-found";
 import { ConflictError } from "../errors/conflict";
 import { BadRequestError } from "../errors/bad-request";
 
 export const errorHandler = (
   err: Error,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction
 ) => {
+  const log = req.log;
+
   /**
    * Zod Validation Error
    */
@@ -30,6 +31,16 @@ export const errorHandler = (
    * Custom App Error
    */
   if (err instanceof AppError) {
+    if (err.statusCode >= 500) {
+      log.error(
+        {
+          action: "reques.failed",
+          err,
+        },
+        "Application error",
+      );
+    }
+    
     return res.status(err.statusCode).json({
       success: false,
       message: err.message,
@@ -39,27 +50,54 @@ export const errorHandler = (
    /**
    * PostgreSQL/Drizzle Database Errors
    */
-  if (err instanceof Error && err.cause && typeof err.cause === "object" && "code" in err.cause) {
-    const pgError = err.cause as { code: string; detail?: string };
+  if (err.cause && typeof err.cause === "object" && "code" in err.cause) {
+    const pgError = err.cause as {
+      code: string;
+      detail?: string;
+    };
 
-    // 23505: unique violation
-    if (pgError.code === "23505") {
-      const message = pgError.detail ?? "Record already exist";
-      throw new ConflictError(message);
-    }
+    const pgErrors: Record<string, { status: number; message: string }> = {
+      "23505": {
+        status: 409,
+        message: "Record already exists",
+      },
+      "23503": {
+        status: 409,
+        message: "Referenced record conflicts with existing data",
+      },
+      "23502": {
+        status: 400,
+        message: "Required field is missing",
+      },
+    };
 
-    // 23503: foreign key violation
-    if (pgError.code === "23503") {
-      const message = pgError.detail ?? "Referenced record does not exist";
-      throw new NotFoundError(message);
-    }
+    const mapped = pgErrors[pgError.code];
 
-    // 23502: not null violation
-    if (pgError.code === "23502") {
-      const message = pgError.detail ?? "Required field is missing";
-      throw new BadRequestError(message);    
+    if (mapped) {
+      log.warn(
+        {
+          action: "database.constraint.violation",
+          code: pgError.code,
+          reqId: req.id,
+        },
+        "Database constraint violation"
+      );
+
+      return res.status(mapped.status).json({
+        success: false,
+        message: mapped.message,
+      });
     }
   }
+
+  log.error(
+    {
+      err,
+      action: "request.internal_error",
+      reqId: req.id,
+    },
+    "Unhandled application error"
+  );
 
   /**
    * Unknown Error

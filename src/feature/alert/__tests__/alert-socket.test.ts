@@ -76,7 +76,7 @@ describe("Alert Socket", () => {
   async function startServer() {
     server = createServer();
 
-    io = initializeSocket(server);
+    io = await initializeSocket(server);
     initializeAlertSocket(io);
 
     await new Promise<void>((resolve) => {
@@ -126,6 +126,7 @@ describe("Alert Socket", () => {
 
     sendAlert("token-a", {
       type: "text",
+      donationId: "donation-1",
       data: {
         username: "John",
         message: "Hello!",
@@ -197,6 +198,7 @@ describe("Alert Socket", () => {
     // Send alert only to creator B
     sendAlert("token-b", {
       type: "text",
+      donationId: "donation-1",
       data: {
         username: "Jane",
         message: "Private message",

@@ -8,10 +8,14 @@ const PORT = env.PORT;
 
 const server = createServer(app);
 
-const io = initializeSocket(server);
+const io = await initializeSocket(server);
 
 initializeAlertSocket(io);
 
+server.on("error", (error) => {
+  console.error("HTTP Server Error:", error);
+});
+
 server.listen(PORT, () => {
-  console.log(`Server running on http://localhost${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });

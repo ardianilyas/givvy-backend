@@ -1,10 +1,10 @@
+import { Server } from "socket.io";
+import { auth } from "@/shared/lib/auth";
 import { db } from "@/shared/db";
+import { eq } from "drizzle-orm";
+import { fromNodeHeaders } from "better-auth/node";
 import { creators } from "@/shared/db/schemas";
 import { UnauthorizedError } from "@/shared/errors/unauthorized";
-import { auth } from "@/shared/lib/auth";
-import { fromNodeHeaders } from "better-auth/node";
-import { eq } from "drizzle-orm";
-import type { Server } from "socket.io";
 
 export function initializeAlertSocket(io: Server) {
   const alertNamespace = io.of("/api/alert");
@@ -13,13 +13,17 @@ export function initializeAlertSocket(io: Server) {
     try {
       const token = socket.handshake.auth.token;
 
-      if (!token) return next(new Error("Alert token is required"));
+      if (!token) {
+        return next(new Error("Alert token is required"));
+      }
 
       const session = await auth.api.getSession({
         headers: fromNodeHeaders(socket.handshake.headers),
       });
 
-      if (!session) return next(new UnauthorizedError());
+      if (!session) {
+        return next(new UnauthorizedError());
+      }
 
       const creator = await db.query.creators.findFirst({
         where: eq(creators.alertToken, token),
@@ -29,13 +33,15 @@ export function initializeAlertSocket(io: Server) {
         },
       });
 
-      if (!creator || creator.userId !== session.user.id) return next(new Error("Invalid alert token"));
+      if (!creator || creator.userId !== session.user.id) {
+        return next(new Error("Invalid alert token"));
+      }
 
       socket.data.creatorId = creator.id;
       socket.data.alertToken = token;
 
       next();
-    } catch (e) {
+    } catch (error) {
       next(new UnauthorizedError("Authentication failed"));
     }
   });

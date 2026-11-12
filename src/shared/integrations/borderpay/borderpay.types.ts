@@ -16,3 +16,4 @@ export interface BorderPayPaymentResponse {
   return_url?: string;
   qr_string: string;
   expires_at: string;
+}
