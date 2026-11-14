@@ -17,6 +17,7 @@ import {
 import { db } from "@/shared/db";
 import { creatorBalances } from "@/shared/db/schemas";
 import { eq } from "drizzle-orm";
+import { faker } from "@faker-js/faker";
 
 describe("create-creator", () => {
   let user: ReturnType<typeof request.agent>;
@@ -33,8 +34,8 @@ describe("create-creator", () => {
     user2 = agent2;
 
     payload = {
-      username: "ardianilyas",
-      displayName: "Ardian Ilyas",
+      username: faker.internet.username(),
+      displayName: faker.internet.displayName(),
       description: "Fullstack Developer",
     };
   });
