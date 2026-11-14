@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
 import { CREATOR_JOBS, CREATOR_QUEUE_NAME } from "../creator.constant";
-import { CreatorService } from "../creator.service";
+import { CreatorService } from "../services/creator.service";
 import type { CreatorJobData } from "../creator.type";
 import { redis } from "@/shared/config/redis";
 import { logger } from "@/shared/lib/logger";

@@ -1,12 +1,12 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
-import { authenticate } from "../../../../tests/helpers/auth.helper";
-import { createTestCreator } from "./helpers/create-test-creator";
+import { authenticate } from "../../../../../tests/helpers/auth.helper";
+import { createTestCreator } from "../helpers/create-test-creator";
 import app from "@/app";
 import {
   CREATOR_SUCCESS_MESSAGE,
   CREATOR_TEST_ROUTE,
-} from "../creator.constant";
+} from "../../creator.constant";
 import {
   ERROR_MESSAGE,
   ERROR_STATUS_CODE,

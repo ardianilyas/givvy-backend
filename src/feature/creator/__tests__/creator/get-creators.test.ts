@@ -1,8 +1,8 @@
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
-import { authenticate } from "../../../../tests/helpers/auth.helper";
+import { authenticate } from "../../../../../tests/helpers/auth.helper";
 import app from "@/app";
-import { CREATOR_TEST_ROUTE } from "../creator.constant";
+import { CREATOR_TEST_ROUTE } from "../../creator.constant";
 
 describe("get-creators", () => {
   let user: ReturnType<typeof request.agent>;

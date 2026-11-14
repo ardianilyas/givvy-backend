@@ -11,3 +11,7 @@ export const donationStatusEnum = pgEnum("donation_status", [
 export const paymentStatusEnum = pgEnum("payment_status", [
   "pending", "paid", "failed", "expired"
 ]);
+
+export const withdrawalStatusEnum = pgEnum("withdrawal_status", [
+  "pending", "processing", "completed", "failed",
+]);

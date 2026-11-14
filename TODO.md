@@ -10,6 +10,7 @@
 - [x] Add handle payment webhook
 - [x] Refactor code on donation.service.ts to be more maintainable
 - [x] Add send alert donation after payment status paid
+- [ ] Withdraw creator balance
 
 ### [MEDIUM]
 - [x] Add email service and template for WelcomeCreator

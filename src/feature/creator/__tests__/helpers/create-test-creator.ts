@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import type { CreateCreatorDto } from "../../creator.dto";
+import type { CreateCreatorDto } from "../../dto/creator.dto";
 import { db } from "@/shared/db";
 import { creators } from "@/shared/db/schemas";
 import type { Creator } from "../../creator.type";

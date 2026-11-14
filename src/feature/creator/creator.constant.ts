@@ -45,4 +45,7 @@ export const CREATOR_TEST_ROUTE = {
   UPDATE_CREATOR: (id: string) => `${CREATOR_BASE_URL}/${id}`,
   VERIFY_CREATOR: (id: string) => `${CREATOR_BASE_URL}/${id}/verify`,
   GENERATE_ALERT_TOKEN: (id: string) => `${CREATOR_BASE_URL}/${id}/generate-alert-token`,
+  CREATE_BANK_ACCOUNT: (id: string) => `${CREATOR_BASE_URL}/${id}/bank-account`,
+  GET_BANK_ACCOUNT: (id: string) => `${CREATOR_BASE_URL}/${id}/bank-account`,
+  UPDATE_BANK_ACCOUNT: (id: string) => `${CREATOR_BASE_URL}/${id}/bank-account`,
 }

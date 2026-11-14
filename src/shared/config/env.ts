@@ -15,6 +15,10 @@ const envSchema = z.object({
     error: "FRONTEND_URL is required",
   }),
 
+  ENCRYPTION_KEY: z.string({
+    error: "ENCRYPTION_KEY is required"
+  }),
+
   DATABASE_URL: z.string({
     error: "DATABASE_URL is required",
   }),

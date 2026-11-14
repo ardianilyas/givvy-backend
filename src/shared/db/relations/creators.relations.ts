@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { creatorBalances, creators, donations, user } from "../schemas";
+import { creatorBalances, creatorBankAccounts, creators, donations, user, withdrawals } from "../schemas";
 
 export const creatorRelations = relations(creators, ({ one, many }) => ({
   user: one(user, {
@@ -8,4 +8,6 @@ export const creatorRelations = relations(creators, ({ one, many }) => ({
   }),
   donations: many(donations),
   balance: one(creatorBalances),
+  bankAccounts: many(creatorBankAccounts),
+  withdrawals: many(withdrawals),
 }));
