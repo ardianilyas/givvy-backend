@@ -1,11 +1,11 @@
 import { asyncHandler } from "@/shared/utils/async-handler";
-import type { CreatorService } from "./creator.service";
+import type { CreatorService } from "../services/creator.service";
 import type { Request, Response } from "express";
 import { sendSuccess } from "@/shared/utils/response";
 import { validate } from "@/shared/utils/validate";
-import { createCreatorDto, getCreatorById, getCreatorByUsername, updateCreatorDto } from "./creator.dto";
+import { createCreatorDto, getCreatorById, getCreatorByUsername, updateCreatorDto } from "../dto/creator.dto";
 import type { AuthenticatedRequest } from "@/shared/types";
-import { CREATOR_SUCCESS_MESSAGE } from "./creator.constant";
+import { CREATOR_SUCCESS_MESSAGE } from "../creator.constant";
 import { logger } from "@/shared/lib/logger";
 
 export class CreatorController {

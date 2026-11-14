@@ -1,20 +1,20 @@
 import { db } from "@/shared/db";
-import type { Creator } from "./creator.type";
+import type { Creator } from "../creator.type";
 import { creatorBalances, creators } from "@/shared/db/schemas";
 import { asc, eq } from "drizzle-orm";
 import { NotFoundError } from "@/shared/errors/not-found";
-import { CREATOR_JOBS, CREATOR_NOT_FOUND, USER_ALREADY_HAVE_CREATOR_ACCOUNT_FORBIDDEN, USERNAME_ALREADY_TAKEN } from "./creator.constant";
-import type { CreateCreatorDto, UpdateCreatorDto } from "./creator.dto";
+import { CREATOR_JOBS, CREATOR_NOT_FOUND, USER_ALREADY_HAVE_CREATOR_ACCOUNT_FORBIDDEN, USERNAME_ALREADY_TAKEN } from "../creator.constant";
+import type { CreateCreatorDto, UpdateCreatorDto } from "../dto/creator.dto";
 import { ConflictError } from "@/shared/errors/conflict";
 import { AppError } from "@/shared/errors/app-error";
 import { ForbiddenError } from "@/shared/errors/forbidden";
-import { CreatorPolicy } from "./creator.policy";
+import { CreatorPolicy } from "../creator.policy";
 import { addDays } from "date-fns";
 import { recipient, resend } from "@/shared/config/resend";
 import { env } from "@/shared/config/env";
 import { BadRequestError } from "@/shared/errors/bad-request";
-import { creatorQueue } from "./queue/creator.queue";
-import CreatorWelcomeEmail from "./emails/CreatorWelcomeEmail";
+import { creatorQueue } from "../queue/creator.queue";
+import CreatorWelcomeEmail from "../emails/CreatorWelcomeEmail";
 import { randomBytes } from "node:crypto";
 
 export class CreatorService {

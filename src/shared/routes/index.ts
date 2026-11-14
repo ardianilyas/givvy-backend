@@ -1,5 +1,5 @@
 import { Router } from "express";
-import creatorRoute from "@/feature/creator/creator.route";
+import creatorRoute from "@/feature/creator/routes/creator.route";
 import donationRoute from "@/feature/donation/donation.route";
 
 const router = Router();
