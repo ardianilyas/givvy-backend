@@ -9,6 +9,7 @@ export default defineConfig({
   },
   test: {
     globals: true,
+    fileParallelism: false,
     setupFiles: ["./tests/setup.ts"]
   }
 });
