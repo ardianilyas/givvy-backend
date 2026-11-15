@@ -17,6 +17,8 @@ describe("get-creators", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.data).toBeDefined();
+    expect(res.body.data.data).toBeDefined();
+    expect(res.body.data.pagination).toBeDefined();
   });
 
   it("should return 200 when user is authorized", async () => {
@@ -24,5 +26,7 @@ describe("get-creators", () => {
 
     expect(res.status).toBe(200);
     expect(res.body.data).toBeDefined();
+    expect(res.body.data.data).toBeDefined();
+    expect(res.body.data.pagination).toBeDefined();
   });
 });
