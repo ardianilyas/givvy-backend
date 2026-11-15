@@ -12,7 +12,15 @@ export class CreatorController {
   constructor(private readonly creatorService: CreatorService) {}
 
   getCreators = asyncHandler(async (req: Request, res: Response) => {
-    const creators = await this.creatorService.getCreators();
+    const limit = Number(req.query.limit) || 2;
+    const cursorQuery = req.query.cursor ? JSON.parse(String(req.query.cursor)) : undefined;
+    const cursor = cursorQuery
+      ? {
+        createdAt: new Date(cursorQuery.createdAt),
+        id: cursorQuery.id,
+      }
+      : undefined;
+    const creators = await this.creatorService.getCreators({ limit, cursor });
     return sendSuccess(res, CREATOR_SUCCESS_MESSAGE.GET_CREATORS, creators);
   });
 
