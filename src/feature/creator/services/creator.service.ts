@@ -1,7 +1,7 @@
 import { db } from "@/shared/db";
 import type { Creator } from "../creator.type";
 import { creatorBalances, creators } from "@/shared/db/schemas";
-import { asc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { NotFoundError } from "@/shared/errors/not-found";
 import { CREATOR_JOBS, CREATOR_NOT_FOUND, USER_ALREADY_HAVE_CREATOR_ACCOUNT_FORBIDDEN, USERNAME_ALREADY_TAKEN } from "../creator.constant";
 import type { CreateCreatorDto, UpdateCreatorDto } from "../dto/creator.dto";
@@ -16,10 +16,47 @@ import { BadRequestError } from "@/shared/errors/bad-request";
 import { creatorQueue } from "../queue/creator.queue";
 import CreatorWelcomeEmail from "../emails/CreatorWelcomeEmail";
 import { randomBytes } from "node:crypto";
+import { paginate } from "@/shared/utils/pagination";
+
+interface GetCreatorsParams {
+  limit?: number;
+  cursor?: {
+    createdAt: Date;
+    id: string;
+  }
+}
 
 export class CreatorService {
-  getCreators(): Promise<Creator[]> {
-    return db.select().from(creators).where(eq(creators.isActive, true)).orderBy(asc(creators.username));
+  getCreators({ limit = 10, cursor }: GetCreatorsParams) {
+    return paginate({
+      limit,
+
+      pagination: {
+        where: eq(creators.isActive, true),
+
+        cursors: [
+          [creators.createdAt, "desc", cursor?.createdAt],
+          [creators.id, "asc", cursor?.id],
+        ],
+      },
+
+      findMany: (options) =>
+        db.query.creators.findMany({
+          ...options,
+
+          columns: {
+            id: true,
+            username: true,
+            displayName: true,
+            createdAt: true,
+          },
+        }),
+
+      getCursor: (item) => ({
+        createdAt: item.createdAt,
+        id: item.id,
+      }),
+    });
   }
 
   async getCreator(username: string): Promise<Creator> {
