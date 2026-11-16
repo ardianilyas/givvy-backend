@@ -43,6 +43,13 @@
       "when": 1794580314731,
       "tag": "0005_open_wrecker",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794746582919,
+      "tag": "0006_absent_scarlet_witch",
+      "breakpoints": true
     }
   ]
 }

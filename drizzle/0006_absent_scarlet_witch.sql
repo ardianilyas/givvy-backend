@@ -1,0 +1,1 @@
+ALTER TABLE "withdrawals" ALTER COLUMN "total_deducted" DROP NOT NULL;

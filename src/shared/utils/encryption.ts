@@ -54,5 +54,5 @@ export function decrypt(encryptedText: string): string {
   return Buffer.concat([
     decipher.update(encrypted),
     decipher.final(),
-  ]).toString("base64");
+  ]).toString("utf8");
 }

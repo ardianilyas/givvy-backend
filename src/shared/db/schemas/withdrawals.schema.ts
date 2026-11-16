@@ -14,7 +14,7 @@ export const withdrawals = pgTable("withdrawals", {
   amount: bigint("amount", { mode: "number" }).notNull(),
   platformFee: bigint("platform_fee", { mode: "number" }).notNull(),
   gatewayFee: bigint("gateway_fee", { mode: "number" }).notNull(),
-  totalDeducted: bigint("total_deducted", { mode: "number" }).notNull(),
+  totalDeducted: bigint("total_deducted", { mode: "number" }),
   status: withdrawalStatusEnum("status").default("pending").notNull(),
   referenceId: varchar("reference_id", { length: 100 }).notNull(),
   gatewayReference: varchar("gateway_reference", { length: 150 }),
