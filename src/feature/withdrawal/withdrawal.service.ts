@@ -8,6 +8,7 @@ import { createDisbursement } from "@/shared/integrations/borderpay";
 import { UnprocessableEntityError } from "@/shared/errors/unprocessable-entity";
 import { BadRequestError } from "@/shared/errors/bad-request";
 import type { Logger } from "pino";
+import { CREATOR_NOT_FOUND, INSUFFICIENT_BALANCE } from "./withdrawal.constant";
 
 const GATEWAY_FEE = 5000;
 const PLATFORM_FEE_RATE = 0.05;
@@ -21,11 +22,7 @@ export class WithdrawalService {
     log: Logger
   ) {
     // 1. Validate ownership
-    const isOwner = await this.ensureUserIsCreator(userId, creatorId);
-
-    if (!isOwner) {
-      throw new NotFoundError("Creator not found");
-    }
+    await this.ensureUserIsCreator(userId, creatorId);
 
     // 2. Validate bank account ownership
     const bankAccount = await this.getBankAccountByIdAndCreatorId(
@@ -68,9 +65,7 @@ export class WithdrawalService {
         });
 
       if (!updatedBalance) {
-        throw new UnprocessableEntityError(
-          "INSUFFICIENT_BALANCE"
-        );
+        throw new UnprocessableEntityError(INSUFFICIENT_BALANCE);
       }
 
       log.info(
@@ -216,7 +211,7 @@ export class WithdrawalService {
       )
       .limit(1);
 
-    if (!creator) throw new NotFoundError("Creator not found");
+    if (!creator) throw new NotFoundError(CREATOR_NOT_FOUND);
 
     return !!creator;
   }
@@ -245,7 +240,7 @@ export class WithdrawalService {
       .where(eq(creatorBalances.creatorId, creatorId))
       .limit(1);
 
-    if (!creatorBalance) throw new Error("Creator not found");
+    if (!creatorBalance) throw new Error(CREATOR_NOT_FOUND);
 
     return creatorBalance.balance;
   }
